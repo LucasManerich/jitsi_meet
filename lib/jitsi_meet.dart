@@ -21,6 +21,10 @@ class JitsiMeet {
     multiLine: false,
   );
 
+  static Future<void> endMeeting() async {
+    return await _channel.invokeMethod('endMeeting');
+  }
+  
   /// Joins a meeting based on the JitsiMeetingOptions passed in.
   /// A JitsiMeetingListener can be attached to this meeting that will automatically
   /// be removed when the meeting has ended

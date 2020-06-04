@@ -15,6 +15,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import java.net.URL
+import android.os.Handler;
 
 /** JitsiMeetPlugin */
 public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -86,6 +87,9 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
             "joinMeeting" -> {
                 joinMeeting(call, result)
             }
+			"endMeeting" -> {
+                endMeeting(call, result)
+            }
             else -> result.notImplemented()
         }
     }
@@ -138,6 +142,11 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
         JitsiMeetPluginActivity.launchActivity(activity, options)
         result.success("Successfully joined room: $room")
     }
+	
+	private fun endMeeting(call: MethodCall, result: Result) {
+		JitsiMeetPluginActivity.getAppInstance().finish();
+		result.success("Successfully end meeting")
+	}
 
     /**
      * ActivityAware interface implementations

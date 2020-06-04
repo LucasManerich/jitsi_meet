@@ -7,12 +7,22 @@ import com.gunschu.jitsi_meet.JitsiMeetPlugin.Companion.JITSI_PLUGIN_TAG
 import org.jitsi.meet.sdk.JitsiMeetActivity
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import android.content.res.Configuration
+import android.os.Handler;
+import android.os.Bundle
 
 /**
  * Activity extending JitsiMeetActivity in order to override the conference events
  */
 class JitsiMeetPluginActivity: JitsiMeetActivity() {
     companion object {
+      
+        @JvmField
+        var appInstance: JitsiMeetPluginActivity? = null
+
+        @JvmStatic fun getAppInstance(): JitsiMeetPluginActivity {
+            return appInstance as JitsiMeetPluginActivity
+        }
+
         @JvmStatic
         fun launchActivity(context: Context?,
                            options: JitsiMeetConferenceOptions) {
@@ -22,6 +32,11 @@ class JitsiMeetPluginActivity: JitsiMeetActivity() {
             }
             context?.startActivity(intent)
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+      appInstance = this;
     }
 
     var onStopCalled: Boolean = false;
@@ -64,7 +79,6 @@ class JitsiMeetPluginActivity: JitsiMeetActivity() {
     }
 
     override fun onConferenceTerminated(data: MutableMap<String, Any>?) {
-
         Log.d(JITSI_PLUGIN_TAG, String.format("JitsiMeetPluginActivity.onConferenceTerminated: %s", data))
         JitsiMeetEventStreamHandler.instance.onConferenceTerminated(data)
         super.onConferenceTerminated(data)
