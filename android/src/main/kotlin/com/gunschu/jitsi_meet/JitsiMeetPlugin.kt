@@ -15,7 +15,8 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
 import org.jitsi.meet.sdk.JitsiMeetUserInfo
 import java.net.URL
-import android.os.Handler;
+import android.os.Handler
+import java.lang.Exception
 
 /** JitsiMeetPlugin */
 public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -144,8 +145,12 @@ public class JitsiMeetPlugin() : FlutterPlugin, MethodCallHandler, ActivityAware
     }
 	
 	private fun endMeeting(call: MethodCall, result: Result) {
-		JitsiMeetPluginActivity.getAppInstance().finish();
-		result.success("Successfully end meeting")
+		try {
+			JitsiMeetPluginActivity.getAppInstance().leave();
+			result.success("Successfully end meeting");
+		} catch(e: Exception) {
+			result.success("Successfully end meeting");
+		}
 	}
 
     /**
