@@ -94,6 +94,11 @@ class JitsiViewController: UIViewController {
         pipViewCoordinator = nil
         //self.dismiss(animated: true, completion: nil)
     }
+
+    fileprivate func cleanUpAndClose() {
+        jitsiMeetView?.leave();
+        self.cleanUp();
+    }
 }
 
 extension JitsiViewController: JitsiMeetViewDelegate {
@@ -125,6 +130,15 @@ extension JitsiViewController: JitsiMeetViewDelegate {
             }
         }
         
+    }
+
+    func callTheEnd() {
+        DispatchQueue.main.async {
+            self.pipViewCoordinator?.hide() { _ in
+                self.cleanUpAndClose()
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     func enterPicture(inPicture data: [AnyHashable : Any]!) {
