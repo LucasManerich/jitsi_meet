@@ -33,7 +33,12 @@ class JitsiMeetPluginActivity: JitsiMeetActivity() {
             context?.startActivity(intent)
         }
     }
-
+	
+		override fun onDestroy() {
+			getJitsiView().leave();
+			super.onDestroy();
+		}
+	
     override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
       appInstance = this;
